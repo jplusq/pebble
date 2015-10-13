@@ -100,8 +100,9 @@ static void init(void) {
 	tick_timer_service_subscribe(MINUTE_UNIT, handle_minute_tick);
 
 	// Prevent starting blank
-	layer_mark_dirty(s_date_layer);
-	layer_mark_dirty(s_time_layer);
+	time_t now = time(NULL);
+	struct tm *t = localtime(&now);
+	handle_minute_tick(t, MINUTE_UNIT);
 }
 
 static void deinit(void) {
