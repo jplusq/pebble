@@ -1,0 +1,23 @@
+###############
+#    ignore   #
+###############
+###############
+#    global   #
+###############
+/UI/
+/lib/
+/*/.metadata
+/*/RemoteSystemsTempFiles/
+
+###############
+#    project  #
+###############
+/*/*/screenshot/
+/*/*/.externalToolBuilders/
+/*/*/.settings/
+/*/*/.lock-waf_linux2_build
+/*/*/.project
+/*/*/.cproject
+
+
+

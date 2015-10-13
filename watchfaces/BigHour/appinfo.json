@@ -1,0 +1,25 @@
+{
+  "uuid": "5f773582-7636-4c29-97a2-9f3bec526368",
+  "shortName": "BigHour",
+  "longName": "BigHour",
+  "companyName": "Qlife Technology",
+  "versionLabel": "1.0",
+  "sdkVersion": "3",
+  "targetPlatforms": ["aplite"],
+  "watchapp": {
+    "watchface": true
+  },
+  "appKeys": {
+    "dummy": 0
+  },
+  "resources": {
+    "media": [
+      {
+        "menuIcon": true,
+        "type": "png",
+        "name": "IMAGE_MENU_ICON",
+        "file": "images/menu_icon_bighour.png"
+      }
+    ]
+  }
+}
