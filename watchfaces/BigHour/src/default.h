@@ -4,31 +4,35 @@
  *  Created on: 10/10/2015
  *      Author: qin
  */
-#include "pebble.h"
+#include <pebble.h>
+
 #ifndef SRC_DEFAULT_H_
 #define SRC_DEFAULT_H_
 
+//SCREEN
+#define SCREEN_WIDTH 			144
+#define SCREEN_HEIGHT			168
+
 //DATE
-#define DATE_CHAR_SPACING			2
+#define DATE_BAR_HEIGHT 		24
+#define DATE_CHAR_SPACING		2
 #define WEEK_DATE_SPACING		5
-#define DATE_LEFT_MARGIN				5
-#define DATE_TOP_MARGIN				5
+#define DATE_LEFT_MARGIN		5
+#define DATE_TOP_MARGIN			5
+
 //TIME
 #define H_STROKE_SEG_NUM 		3
 #define V_STROKE_SEG_NUM 		3
 #define SEG_HEIGHT 				22
 #define SEG_SPACING 			1
-
-#define MINUTE_00_Y				3
-#define MINUTE_59_Y				MINUTE_00_Y+137
-
-#define H_TOP_STROKE_Y			3
-#define H_MIDDLE_STROKE_Y		60
-#define H_BOTTOM_STROKE_Y		118
-#define H_MIDDLE_STROKE_SPLIT_Y	71
-
-#define V_UP_STROKE_Y			3
-#define V_DOWN_STROKE_Y			72
+#define MINUTE_00_Y				DATE_BAR_HEIGHT + 3
+#define MINUTE_59_Y				DATE_BAR_HEIGHT+MINUTE_00_Y+137
+#define H_TOP_STROKE_Y			DATE_BAR_HEIGHT+3
+#define H_MIDDLE_STROKE_Y		DATE_BAR_HEIGHT+60
+#define H_BOTTOM_STROKE_Y		DATE_BAR_HEIGHT+118
+#define H_MIDDLE_STROKE_SPLIT_Y	DATE_BAR_HEIGHT+71
+#define V_UP_STROKE_Y			DATE_BAR_HEIGHT+3
+#define V_DOWN_STROKE_Y			DATE_BAR_HEIGHT+72
 
 //view1 1:xx
 #define VIEW_1_SEG_WIDTH 		72
@@ -158,5 +162,6 @@ static const Character *LETTER_TABLE[25] = { &CHAR_A, &CHAR_B, &CHAR_C, &CHAR_D,
 static const Character *NUMBER_TABLE[10] = {&CHAR_ZERO, &CHAR_ONE, &CHAR_TWO, &CHAR_THREE, &CHAR_FOUR, &CHAR_FIVE,
 		&CHAR_SIX, &CHAR_SEVEN, &CHAR_EIGHT, &CHAR_NINE};
 
+void drawBigHour(struct tm* t, GContext* ctx);
 #endif
 /* SRC_DEFAULT_H_ */

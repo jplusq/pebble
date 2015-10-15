@@ -1,3 +1,4 @@
+#include <pebble.h>
 #include "default.h"
 
 static int get_hour(struct tm* t) {
@@ -153,8 +154,9 @@ static void put_letter(const Character *ch, GContext* ctx, int x, int y) {
 	}
 }
 
-static void draw_date(struct tm* t, GContext* ctx, int boundsWidth) {
-	char txt[] = "XXX 00XXX";
+static void draw_date(struct tm* t, GContext* ctx) {
+	graphics_context_set_fill_color(ctx, GColorBlack);
+	static char txt[] = "XXX 00XXX";
 	strftime(txt, sizeof(txt), "%a %e%b", t);
 
 	int width = 0,x;
@@ -177,7 +179,7 @@ static void draw_date(struct tm* t, GContext* ctx, int boundsWidth) {
 		width += ch->width + DATE_CHAR_SPACING;
 		c++;
 	}
-	x = (boundsWidth - width + DATE_CHAR_SPACING)/2;
+	x = (SCREEN_WIDTH - width + DATE_CHAR_SPACING)/2;
 
 	c = txt;
 	while (*c != '\0') {
@@ -199,4 +201,9 @@ static void draw_date(struct tm* t, GContext* ctx, int boundsWidth) {
 		c++;
 	}
 
+}
+
+void drawBigHour(struct tm* t, GContext* ctx){
+	draw_date(t, ctx);
+	draw_time(t,ctx);
 }
