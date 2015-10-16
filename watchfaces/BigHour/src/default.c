@@ -204,6 +204,7 @@ static void draw_date(struct tm* t, GContext* ctx) {
 }
 
 void drawBigHour(struct tm* t, GContext* ctx){
+	APP_LOG(APP_LOG_LEVEL_DEBUG,"00Y:%d,59Y:%d",MINUTE_00_Y, MINUTE_59_Y);
 	draw_date(t, ctx);
 	draw_time(t,ctx);
 }
