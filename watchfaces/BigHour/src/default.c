@@ -19,7 +19,9 @@ static void put_pixel(void* ctx, int x, int y, int minuteY) {
 /*
  * set horizontal stroke in matrix
  */
-static void put_horizontl_stroke(int x, int y, GContext* ctx, int segWidth, int mintueY, char isVMiddle) {
+static void put_horizontal_stroke(int x, int y, GContext* ctx, int segWidth,
+		int mintueY, char isVMiddle) {
+	APP_LOG(APP_LOG_LEVEL_DEBUG_VERBOSE, "#H#horizontal stroke:%d,%d", x, y);
 	int segX, hSegCount, hPixelCount, vPixelCount, vPixelNum;
 	vPixelNum = isVMiddle ? SEG_HEIGHT + 1 : SEG_HEIGHT;
 	//horizontal segment
@@ -41,7 +43,9 @@ static void put_horizontl_stroke(int x, int y, GContext* ctx, int segWidth, int 
 /*
  * set vertical stroke in matrix
  */
-static void put_vertical_stroke(int x, int y, GContext* ctx, int segWidth, int mintueY) {
+static void put_vertical_stroke(int x, int y, GContext* ctx, int segWidth,
+		int mintueY) {
+	APP_LOG(APP_LOG_LEVEL_DEBUG_VERBOSE, "#V#vertical stroke:%d,%d", x, y);
 	int segY, vSegCount, hPixelCount, vPixelCount;
 	//vertical segment
 	for (vSegCount = 0; vSegCount < V_STROKE_SEG_NUM; vSegCount++) {
@@ -58,12 +62,14 @@ static void put_vertical_stroke(int x, int y, GContext* ctx, int segWidth, int m
 /*
  * pub stroke stroke in matrix
  */
-static void put_stroke(Stroke stroke, int digitX, GContext* ctx, int segWidth, int mintueY) {
+static void put_stroke(Stroke stroke, int digitX, GContext* ctx, int segWidth,
+		int mintueY) {
 	int strokeX;
 	if (stroke == StrokeA) {
 		//A
 		strokeX = digitX;
-		put_horizontl_stroke(strokeX, H_TOP_STROKE_Y, ctx, segWidth, mintueY, 0);
+		put_horizontal_stroke(strokeX, H_TOP_STROKE_Y, ctx, segWidth, mintueY,
+				0);
 	} else if (stroke == StrokeB) {
 		//B
 		strokeX = digitX + (segWidth + SEG_SPACING) * (V_STROKE_SEG_NUM - 1);
@@ -75,7 +81,8 @@ static void put_stroke(Stroke stroke, int digitX, GContext* ctx, int segWidth, i
 	} else if (stroke == StrokeD) {
 		//D
 		strokeX = digitX;
-		put_horizontl_stroke(strokeX, H_BOTTOM_STROKE_Y, ctx, segWidth, mintueY, 0);
+		put_horizontal_stroke(strokeX, H_BOTTOM_STROKE_Y, ctx, segWidth,
+				mintueY, 0);
 	} else if (stroke == StrokeE) {
 		//E
 		strokeX = digitX;
@@ -85,13 +92,15 @@ static void put_stroke(Stroke stroke, int digitX, GContext* ctx, int segWidth, i
 		put_vertical_stroke(strokeX, V_UP_STROKE_Y, ctx, segWidth, mintueY);
 	} else if (stroke == StrokeG) {
 		strokeX = digitX;
-		put_horizontl_stroke(strokeX, H_MIDDLE_STROKE_Y, ctx, segWidth, mintueY, 1);
+		put_horizontal_stroke(strokeX, H_MIDDLE_STROKE_Y, ctx, segWidth,
+				mintueY, 1);
 	}
 }
 /*
  * pub digit stroke in matrix
  */
-static void put_digit(int digit, GContext* ctx, int digitX, int segWidth, int mintueY) {
+static void put_digit(int digit, GContext* ctx, int digitX, int segWidth,
+		int mintueY) {
 	//A
 	if (digit != 1 && digit != 4)
 		put_stroke(StrokeA, digitX, ctx, segWidth, mintueY);
@@ -131,7 +140,8 @@ static void draw_time(struct tm* t, GContext* ctx) {
 	} else if (hour <= 19) {
 		//view 4
 		put_digit(1, ctx, VIEW_4_FIRST_DIGIT_X, VIEW_4_SEG_WIDTH, mintueY);
-		put_digit(hour % 10, ctx, VIEW_4_SECOND_DIGIT_X, VIEW_4_SEG_WIDTH, mintueY);
+		put_digit(hour % 10, ctx, VIEW_4_SECOND_DIGIT_X, VIEW_4_SEG_WIDTH,
+				mintueY);
 	} else if (hour == 21) {
 		//view 5
 		put_digit(2, ctx, VIEW_5_FIRST_DIGIT_X, VIEW_5_SEG_WIDTH, mintueY);
@@ -139,7 +149,8 @@ static void draw_time(struct tm* t, GContext* ctx) {
 	} else {
 		//view 6
 		put_digit(2, ctx, VIEW_6_FIRST_DIGIT_X, VIEW_6_SEG_WIDTH, mintueY);
-		put_digit(hour % 10, ctx, VIEW_6_SECOND_DIGIT_X, VIEW_6_SEG_WIDTH, mintueY);
+		put_digit(hour % 10, ctx, VIEW_6_SECOND_DIGIT_X, VIEW_6_SEG_WIDTH,
+				mintueY);
 	}
 }
 
@@ -150,16 +161,16 @@ static GRect getRect(int x, int y, int (*data)[4]) {
 static void put_letter(const Character *ch, GContext* ctx, int x, int y) {
 	int i;
 	for (i = 0; i < ch->strokeNumber; i++) {
-		graphics_fill_rect(ctx, getRect(x, y, (int (*)[4]) ch->strokes[i]), 0, GCornerNone);
+		graphics_fill_rect(ctx, getRect(x, y, (int (*)[4]) ch->strokes[i]), 0,
+				GCornerNone);
 	}
 }
 
 static void draw_date(struct tm* t, GContext* ctx) {
-	graphics_context_set_fill_color(ctx, GColorBlack);
 	static char txt[] = "XXX 00XXX";
 	strftime(txt, sizeof(txt), "%a %e%b", t);
 
-	int width = 0,x;
+	int width = 0, x;
 	const Character *ch;
 	char* c = txt;
 	while (*c != '\0') {
@@ -169,17 +180,17 @@ static void draw_date(struct tm* t, GContext* ctx) {
 			ch = LETTER_TABLE[*c - 97];
 		} else if (*c >= '0' && *c <= '9') {
 			ch = NUMBER_TABLE[*c - 48];
-		} else if (*c == ' '){
-			width+=WEEK_DATE_SPACING;
+		} else if (*c == ' ') {
+			width += WEEK_DATE_SPACING;
 			c++;
 			continue;
-		}else{
+		} else {
 			continue;
 		}
 		width += ch->width + DATE_CHAR_SPACING;
 		c++;
 	}
-	x = (SCREEN_WIDTH - width + DATE_CHAR_SPACING)/2;
+	x = (SCREEN_WIDTH - width + DATE_CHAR_SPACING) / 2;
 
 	c = txt;
 	while (*c != '\0') {
@@ -189,11 +200,11 @@ static void draw_date(struct tm* t, GContext* ctx) {
 			ch = LETTER_TABLE[*c - 97];
 		} else if (*c >= '0' && *c <= '9') {
 			ch = NUMBER_TABLE[*c - 48];
-		} else if (*c == ' '){
-			x+=WEEK_DATE_SPACING;
+		} else if (*c == ' ') {
+			x += WEEK_DATE_SPACING;
 			c++;
 			continue;
-		}else{
+		} else {
 			continue;
 		}
 		put_letter(ch, ctx, x, DATE_TOP_MARGIN);
@@ -203,7 +214,7 @@ static void draw_date(struct tm* t, GContext* ctx) {
 
 }
 
-void drawBigHour(struct tm* t, GContext* ctx){
+void drawBigHour(struct tm* t, GContext* ctx) {
 	draw_date(t, ctx);
-	draw_time(t,ctx);
+	draw_time(t, ctx);
 }

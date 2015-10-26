@@ -9,6 +9,8 @@
 #ifndef SRC_DEFAULT_H_
 #define SRC_DEFAULT_H_
 
+
+
 //SCREEN
 #define SCREEN_WIDTH 			144
 #define SCREEN_HEIGHT			168

@@ -5,6 +5,10 @@
 static Window *s_main_window;
 static Layer *s_dt_layer;
 
+//color
+static GColor s_bg_color;
+static GColor s_digit_color;
+
 //function
 static void handle_minute_tick(struct tm *tick_time, TimeUnits units_changed);
 static void minute_update_proc(Layer *layer, GContext *ctx);
@@ -25,7 +29,7 @@ static void main_window_load(Window *window) {
 //
 static void minute_update_proc(Layer *layer, GContext *ctx) {
 	//draw background
-	graphics_context_set_fill_color(ctx, GColorWhite);
+	graphics_context_set_fill_color(ctx, s_bg_color);
 	graphics_fill_rect(ctx, layer_get_bounds(layer), 0, GCornerNone);
 
 	//get time
@@ -33,7 +37,8 @@ static void minute_update_proc(Layer *layer, GContext *ctx) {
 	struct tm *t = localtime(&now);
 
 	//draw digit
-	graphics_context_set_stroke_color(ctx, GColorBlack);
+	graphics_context_set_fill_color(ctx, s_digit_color);//date
+	graphics_context_set_stroke_color(ctx, s_digit_color);//digit
 	drawBigHour(t, ctx);
 }
 
@@ -50,9 +55,17 @@ static void main_window_unload(Window *window) {
 
 //
 static void init(void) {
+	#ifdef PBL_COLOR
+		s_digit_color = GColorFromRGB(rand() % 255, rand() % 255, rand() % 255);
+		s_bg_color = GColorFromRGB(rand() % 255, rand() % 255, rand() % 255);
+	#elif defined(PBL_BW)
+		s_digit_color = GColorBlack;
+		s_bg_color = GColorWhite;
+	#endif
+
 	//Create main Window
 	s_main_window = window_create();
-	window_set_background_color(s_main_window, GColorWhite);
+	window_set_background_color(s_main_window, s_bg_color);
 	window_set_window_handlers(s_main_window, (WindowHandlers )
 			{ .load = main_window_load, .unload = main_window_unload });
 

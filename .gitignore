@@ -6,11 +6,13 @@
 ###############
 /UI/
 /lib/
+/tools/
 /RemoteSystemsTempFiles/
 /.metadata
 ###############
 #    project  #
 ###############
+/*/*/log/
 /*/*/screenshot/
 /*/*/build/
 /*/*/.externalToolBuilders/
